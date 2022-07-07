@@ -14,6 +14,10 @@ public class ProjectServiceTestUtils {
 		
 		var array = csv.split(",");
 		
+		if (array.length == 0) {
+			return null;
+		}
+		
 		if(array.length == 8) {
 			var dto = new Project();
 			dto.setId(integer(array[0]));

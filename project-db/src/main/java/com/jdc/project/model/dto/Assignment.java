@@ -1,6 +1,7 @@
 package com.jdc.project.model.dto;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import com.jdc.project.model.dto.Task.Phase;
 
@@ -8,21 +9,63 @@ public class Assignment {
 
 	private int id;
 	private int memberId;
+	
 	private String member;
 	private String memberLogin;
+	
 	private int taskId;
 	private Phase phase;
 	private String task;
 	private LocalDate start;
 	private int days;
+	
+	private Type type;
+	private String remark;
+	
 	private int projectId;
 	private String projectName;
+	
 	private int managerId;
 	private int managerName;
 	private int managerLogin;
 
 	public enum Type {
-		Response, Review
+		Response, Review;
+		
+		public static Type getEnumFromString (String value) {
+			return Arrays.stream(values())
+					.filter( assign -> assign.name().equalsIgnoreCase(value))
+					.findAny()
+					.orElse(null);
+		}
+	}
+
+	
+	public Assignment(int memberid, int taskid, String type, String remark) {
+		this.memberId = memberid;
+		this.taskId = taskid;
+		this.type= Type.getEnumFromString(type);
+		this.remark = remark;
+	}
+
+	public Assignment() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public int getId() {

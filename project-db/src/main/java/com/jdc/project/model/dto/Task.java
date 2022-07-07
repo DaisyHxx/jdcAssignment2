@@ -1,6 +1,7 @@
 package com.jdc.project.model.dto;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 public class Task {
 
@@ -9,14 +10,35 @@ public class Task {
 	private String task;
 	private LocalDate start;
 	private int days;
+	
 	private int projectId;
 	private String projectName;
+	
 	private int managerId;
-	private int managerName;
-	private int managerLogin;
+	private String managerName;
+	private String managerLogin;
 
 	public enum Phase {
-		Analysis, Design, Coding, Testing, Release
+		Analysis, Design, Coding, Testing, Release;
+				
+		// find enum value
+		public static Phase getEnumFromString(String value) {
+			return Arrays.stream(values())
+					.filter( ph -> ph.name().equalsIgnoreCase(value))
+					.findAny()
+					.orElse(null);
+		}
+	}
+
+	public Task() {
+		
+	}
+	public Task(String phase, String task, LocalDate start, int days, int projectId) {
+		this.phase = Phase.getEnumFromString(phase);
+		this.task = task;
+		this.start = start;
+		this.days = days;
+		this.projectId = projectId;
 	}
 
 	public int getId() {
@@ -83,19 +105,19 @@ public class Task {
 		this.managerId = managerId;
 	}
 
-	public int getManagerName() {
+	public String getManagerName() {
 		return managerName;
 	}
 
-	public void setManagerName(int managerName) {
+	public void setManagerName(String managerName) {
 		this.managerName = managerName;
 	}
 
-	public int getManagerLogin() {
+	public String getManagerLogin() {
 		return managerLogin;
 	}
 
-	public void setManagerLogin(int managerLogin) {
+	public void setManagerLogin(String managerLogin) {
 		this.managerLogin = managerLogin;
 	}
 

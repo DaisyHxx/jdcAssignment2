@@ -7,6 +7,7 @@ import com.jdc.project.model.dto.Member.Role;
 
 public class MemberServiceTestUtils {
 
+	// get id from 
 	public static int id(String csv) {
 		var array = csv.split(",");
 		return Integer.parseInt(array[0]);

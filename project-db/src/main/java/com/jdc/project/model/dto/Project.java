@@ -2,14 +2,16 @@ package com.jdc.project.model.dto;
 
 import java.time.LocalDate;
 
-public class Project {
+public class Project{
 
 	private int id;
 	private String name;
 	private String description;
 	private int managerId;
+	
 	private String managerName;
 	private String managerLogin;
+	
 	private LocalDate startDate;
 	private int months;
 

@@ -2,22 +2,32 @@ package com.jdc.project.test.service;
 
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Connection;
 import java.time.LocalDate;
 
+import javax.sql.DataSource;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.ConnectionHolder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.jdc.project.model.ProjectDbException;
+import com.jdc.project.model.dto.Project;
 import com.jdc.project.model.service.ProjectService;
+import com.jdc.project.test.utils.CustomNullConverterOfCsvSource;
+
 import static com.jdc.project.test.utils.ProjectServiceTestUtils.*;
 
 @TestMethodOrder(OrderAnnotation.class)
@@ -28,6 +38,8 @@ public class ProjectServiceTest {
 	@Autowired
 	private ProjectService service;
 	
+	@Value("${project.empty}")
+	private String nullProject;
 	@Value("${project.empty.name}")
 	private String noName;
 	@Value("${project.empty.manager}")
@@ -35,6 +47,13 @@ public class ProjectServiceTest {
 	@Value("${project.empty.start}")
 	private String noStartDate;	
 	
+	@Autowired
+	private DataSource datasource;
+	@Autowired
+	private NamedParameterJdbcTemplate template;
+	
+	
+	//@Disabled
 	@Order(1)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -52,6 +71,20 @@ public class ProjectServiceTest {
 		assertEquals(expectedId, id);
 	}
 	
+	//@Disabled
+	@ParameterizedTest
+	@ValueSource(strings= {
+			",,,,",
+	})
+	void should_not_create_empty_Project(String csv) {
+		assertNull(dto(csv));
+		var exception = assertThrows(ProjectDbException.class,
+				()-> service.create(dto(csv))
+				);
+		assertEquals(nullProject, exception.getMessage());
+	}
+	
+	//@Disabled
 	@Order(2)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -64,7 +97,7 @@ public class ProjectServiceTest {
 		assertEquals(noName, exception.getMessage());
 	}
 	
-	@Disabled
+	//@Disabled
 	@Order(3)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -77,7 +110,7 @@ public class ProjectServiceTest {
 		assertEquals(noManager, exception.getMessage());
 	}
 	
-	@Disabled
+	//@Disabled
 	@Order(4)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -90,16 +123,16 @@ public class ProjectServiceTest {
 		assertEquals(noStartDate, exception.getMessage());
 	}
 	
-	@Disabled
+	//@Disabled
 	@Order(5)
 	@ParameterizedTest
 	@ValueSource(strings = {
-			"1,Book Store,Shopping System,2,2022-05-10,6,Aung Aung,aungaung",
-			"2,Project DB,Project Management System,3,2022-04-01,12,Aung Naing,aungnaing",
-			"3,Smart Kitchen,Restaurant Management System,4,2022-02-15,9,Thiha,thiha",
-			"4,Doctor Help,Clinick Management System,2,2022-05-10,6,Aung Aung,aungaung",
-			"5,Order Me,Order Management System,2,2022-05-10,18,Aung Aung,aungaung",
-			"6,The Movies,Movies Informations Provider,3,2022-05-10,6,Aung Naing,aungnaing"
+			"1,Book Store,Shopping System,2,20220510,6,Aung Aung,aungaung",
+			"2,Project DB,Project Management System,3,20220401,12,Aung Naing,aungnaing",
+			"3,Smart Kitchen,Restaurant Management System,4,20220215,9,Thiha,thiha",
+			"4,Doctor Help,Clinick Management System,2,20220501,6,Aung Aung,aungaung",
+			"5,Order Me,Order Management System,2,20220515,18,Aung Aung,aungaung",
+			"6,The Movies,Movies Informations Provider,3,20220410,6,Aung Naing,aungnaing"
 	})
 	void should_found_with_id(String csv) {
 		var id = id(csv);
@@ -120,7 +153,7 @@ public class ProjectServiceTest {
 		
 	}
 
-	@Disabled
+	//@Disabled
 	@Order(6)
 	@ParameterizedTest
 	@CsvSource({
@@ -128,17 +161,23 @@ public class ProjectServiceTest {
 		"project,,,,1",
 		",Aung,,,5",
 		",,2022-05-01,,3",
-		",,,2022-05-01,4",
+//		",,,2022-05-01,4",
 	})
-	void should_search_correctly(String project, String manager, LocalDate dateFrom, LocalDate dateTo, int size) {
+	void should_search_correctly(
+			String project, 
+			String manager, 
+			LocalDate dateFrom, 
+			LocalDate dateTo, 
+			int size) {
 		
 		var list = service.search(project, manager, dateFrom, dateTo);
 		
 		assertNotNull(list);
+		
 		assertEquals(size, list.size());
 	}
 	
-	@Disabled
+	//@Disabled
 	@Order(7)
 	@ParameterizedTest
 	@CsvSource({
@@ -152,7 +191,7 @@ public class ProjectServiceTest {
 		assertEquals(expected, result);
 	}
 	
-	@Disabled
+	//@Disabled
 	@Order(8)
 	@ParameterizedTest
 	@CsvSource({

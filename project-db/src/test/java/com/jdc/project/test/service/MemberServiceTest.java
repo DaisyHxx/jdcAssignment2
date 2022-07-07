@@ -6,6 +6,7 @@ import static com.jdc.project.test.utils.MemberServiceTestUtils.id;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -39,6 +40,7 @@ public class MemberServiceTest {
 	private String noPassword;
 
 
+	@Disabled
 	@Order(1)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -58,6 +60,8 @@ public class MemberServiceTest {
 		assertEquals(expectedId, resultId);
 	}
 	
+	// check no name error msg with throw exception from MemberService
+	@Disabled
 	@Order(2)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -75,6 +79,7 @@ public class MemberServiceTest {
 		assertEquals(noName, exception.getMessage());
 	}
 	
+	@Disabled
 	@Order(3)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -92,6 +97,7 @@ public class MemberServiceTest {
 		assertEquals(noLoginId, exception.getMessage());
 	}
 	
+	@Disabled
 	@Order(4)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -109,7 +115,8 @@ public class MemberServiceTest {
 		assertEquals(noPassword, exception.getMessage());
 	}
 	
-	@Order(5)
+	//@Disabled
+	//@Order(5)
 	@ParameterizedTest
 	@ValueSource(strings = {
 		"Ko Ko Oo,kokooo,kokooo,Admin,true",
@@ -126,6 +133,7 @@ public class MemberServiceTest {
 		assertEquals(duplicatePassword, exception.getMessage());
 	}
 	
+	@Disabled
 	@Order(6)
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -144,6 +152,7 @@ public class MemberServiceTest {
 		assertMemberValues(dto, result);
 	}
 
+	@Disabled
 	@Order(7)
 	@ParameterizedTest
 	@CsvSource({
@@ -162,6 +171,7 @@ public class MemberServiceTest {
 		assertEquals(role, dto.getRole());
 	}
 	
+	@Disabled
 	@Order(8)
 	@ParameterizedTest
 	@CsvSource({
@@ -176,6 +186,7 @@ public class MemberServiceTest {
 		assertEquals(1, result);
 	}
 	
+	@Disabled
 	@Order(9)
 	@ParameterizedTest
 	@CsvSource({
@@ -190,6 +201,7 @@ public class MemberServiceTest {
 		assertEquals("Please check your last login id.", exception.getMessage());
 	}
 	
+	@Disabled
 	@Order(10)
 	@ParameterizedTest
 	@CsvSource({
@@ -204,6 +216,7 @@ public class MemberServiceTest {
 		assertEquals("You can't set the same password. Please change your new password.", exception.getMessage());
 	}
 	
+	@Disabled
 	@Order(11)
 	@ParameterizedTest
 	@CsvSource({
@@ -218,6 +231,7 @@ public class MemberServiceTest {
 		assertEquals(1, result);
 	}
 	
+	@Disabled
 	@Order(11)
 	@ParameterizedTest
 	@ValueSource(ints = {1, 2, 3, 4, 5})
@@ -229,7 +243,7 @@ public class MemberServiceTest {
 		assertEquals(1, result);
 	}
 	
-	
+	@Disabled
 	@Order(12)
 	@ParameterizedTest
 	@CsvSource({
@@ -245,6 +259,7 @@ public class MemberServiceTest {
 		assertEquals(count, list.size());
 	}
 	
+	@Disabled
 	@Order(13)
 	@ParameterizedTest
 	@CsvSource({
@@ -259,6 +274,7 @@ public class MemberServiceTest {
 		assertEquals(count, list.size());
 	}
 
+	@Disabled
 	@Order(14)
 	@ParameterizedTest
 	@CsvSource({

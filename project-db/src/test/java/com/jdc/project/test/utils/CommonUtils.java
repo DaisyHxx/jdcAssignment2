@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 
 public class CommonUtils {
 
-	static int integer(String str) {
+	public static int integer(String str) {
 		if(StringUtils.hasLength(str)) {
 			return Integer.parseInt(str);
 		}
@@ -15,7 +15,7 @@ public class CommonUtils {
 		return 0;
 	}
 	
-	static LocalDate localDate(String str) {
+	public static LocalDate localDate(String str) {
 		if(StringUtils.hasLength(str)) {
 			return LocalDate.parse(str, DateTimeFormatter.ofPattern("yyyyMMdd"));
 		}

@@ -39,8 +39,10 @@ public class MemberHelper {
 		if (!StringUtils.hasLength(dto.getPassword())) {
 			throw new ProjectDbException(noPassword);
 		}
+		
 	}
 
+	//map db with Member obj
 	public Map<String, Object> insertParams(Member dto) {
 		var map = new HashMap<String, Object>();
 		map.put("name", dto.getName());
